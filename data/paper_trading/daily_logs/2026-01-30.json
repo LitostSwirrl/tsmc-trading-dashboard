@@ -1,12 +1,12 @@
 {
-  "date": "2026-02-02",
-  "timestamp": "2026-02-02T16:30:05.212753",
+  "date": "2026-01-30",
+  "timestamp": "2026-01-30T16:30:13.092047",
   "actions": [],
   "signals": [
     {
       "type": "HOLD",
       "direction": "LONG",
-      "confidence": 0.43579649925231934,
+      "confidence": 0.4682256281375885,
       "validated": false
     }
   ],
