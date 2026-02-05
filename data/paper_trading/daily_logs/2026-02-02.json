@@ -1,0 +1,10 @@
+{
+  "date": "2026-02-02",
+  "portfolio": {
+    "total_equity": 100000,
+    "cash": 100000,
+    "positions_value": 0
+  },
+  "signals_count": 1,
+  "actions_count": 0
+}

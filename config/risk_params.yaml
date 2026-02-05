@@ -1,0 +1,4 @@
+# Risk Parameters
+max_portfolio_exposure: 0.50
+max_positions: 3
+max_drawdown_alert: 0.15
