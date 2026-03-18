@@ -33,10 +33,10 @@ st.markdown("""
     }
     .sidebar-title:hover { text-decoration: underline; }
     .sidebar-subtitle { font-size: 0.8rem; color: #666; margin-bottom: 1rem; }
-    /* Fix: selected menu icon invisible on blue bg */
-    .nav-link-selected .icon { color: white !important; }
-    div[data-testid="stSidebar"] .nav-link-selected i,
-    div[data-testid="stSidebar"] .nav-link-selected .bi { color: white !important; }
+    /* Fix: selected menu icon invisible on blue bg — target all possible icon elements */
+    .nav-link.nav-link-selected * { color: white !important; fill: white !important; }
+    a.nav-link.nav-link-selected span { color: white !important; }
+    [class*="nav-link-selected"] * { color: white !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -118,24 +118,27 @@ def fetch_tsmc_price(days: int) -> pd.DataFrame:
     """Fetch TSMC price data from Yahoo Finance (cached 1 hour)."""
     try:
         import yfinance as yf
-        period_map = {30: "1mo", 90: "3mo", 180: "6mo", 365: "1y"}
+        period_map = {7: "1mo", 30: "3mo", 90: "6mo", 180: "1y", 365: "2y"}
         period = period_map.get(days, "1y")
         df = yf.download("2330.TW", period=period, progress=False)
         if df.empty:
             return pd.DataFrame()
+        # Flatten MultiIndex columns: ('Close', '2330.TW') -> 'close'
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = [c[0].lower() for c in df.columns]
+        else:
+            df.columns = [c.lower() for c in df.columns]
         df = df.reset_index()
-        df.columns = [c.lower() if isinstance(c, str) else c[0].lower() for c in df.columns]
-        if 'date' not in df.columns and 'datetime' in df.columns:
-            df = df.rename(columns={'datetime': 'date'})
+        # reset_index may produce 'Date' or 'date'
+        df.columns = [c.lower() if isinstance(c, str) else c for c in df.columns]
         return df
-    except Exception:
+    except Exception as e:
         return pd.DataFrame()
 
 
 def render_price_chart(data_loader, chart_gen, days):
     """Render TSMC price chart with trade markers."""
     st.header("TSMC (2330.TW) Price Chart")
-    st.caption("Candlestick chart in NTD with bot trade decisions marked. Data from Yahoo Finance.")
 
     price_days = days or 365
     price_data = fetch_tsmc_price(price_days)
@@ -187,6 +190,9 @@ def render_overview(data_loader, metrics, chart_gen, days):
 
     portfolio = data_loader.get_portfolio_status()
 
+    has_position = len(portfolio.get('positions', {})) > 0
+    position_label = "LONG" if has_position else "No Position"
+
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric("Total Equity", f"${portfolio['total_equity']:,.0f}",
@@ -196,12 +202,13 @@ def render_overview(data_loader, metrics, chart_gen, days):
     with col3:
         st.metric("Invested", f"${portfolio['invested']:,.0f}")
     with col4:
-        st.metric("Positions", len(portfolio.get('positions', {})))
+        st.metric("TSMC Position", position_label)
 
     st.markdown("---")
 
     # Equity curve
     st.subheader("Portfolio Value Over Time")
+    st.caption(f"Initial capital: $100,000 NTD | Long-only TSMC (2330.TW) | Odd-lot trading")
     equity_data = data_loader.get_equity_curve(days=days)
     trades = data_loader.get_trade_history(days=days)
 

@@ -87,13 +87,6 @@ class ChartGenerator:
                         hovertemplate='%{text}<br>Date: %{x|%Y-%m-%d}<extra></extra>'
                     ))
 
-        if 'equity' in equity_data.columns and len(equity_data) > 0:
-            initial = equity_data['equity'].iloc[0]
-            fig.add_hline(y=initial, line_dash="dash", line_color=self.colors['neutral'],
-                         annotation_text="Initial Capital",
-                         annotation_position="bottom left",
-                         annotation=dict(font_size=11, font_color=self.colors['neutral']))
-
         fig.update_layout(
             title='Portfolio Equity Curve',
             xaxis_title='Date',
