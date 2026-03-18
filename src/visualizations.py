@@ -301,21 +301,24 @@ class ChartGenerator:
             tp['date'] = pd.to_datetime(tp['date'])
             marker_cfg = {
                 'BUY': {'color': '#0066FF', 'shape': 'triangle-up', 'outline': '#001a44',
-                         'vline': 'rgba(0, 102, 255, 0.25)'},
+                         'vline': 'rgba(0, 102, 255, 0.22)'},
                 'SELL': {'color': '#FF6600', 'shape': 'triangle-down', 'outline': '#441a00',
-                          'vline': 'rgba(255, 102, 0, 0.25)'},
+                          'vline': 'rgba(255, 102, 0, 0.22)'},
             }
             for action, cfg in marker_cfg.items():
                 subset = tp[tp['action'] == action]
                 if subset.empty:
                     continue
 
-                # Add faint dashed vertical lines for each trade date
+                # Dashed vertical lines spanning full chart height via shapes
                 for trade_date in subset['date']:
-                    fig.add_vline(
-                        x=trade_date.timestamp() * 1000,
-                        line_dash='dash', line_width=1, line_color=cfg['vline'],
-                        row='all', col=1,
+                    date_str = trade_date.strftime('%Y-%m-%d')
+                    fig.add_shape(
+                        type='line',
+                        x0=date_str, x1=date_str, y0=0, y1=1,
+                        xref='x', yref='paper',
+                        line=dict(color=cfg['vline'], width=1, dash='dash'),
+                        layer='below',
                     )
 
                 hovers = []
