@@ -35,10 +35,8 @@ st.markdown("""
     .sidebar-subtitle { font-size: 0.8rem; color: #666; margin-bottom: 1rem; }
     a[href*="page=Overview"] { text-decoration: none !important; }
     a[href*="page=Overview"]:hover { text-decoration: none !important; }
-    /* Fix: selected menu icon invisible on blue bg — target all possible icon elements */
-    .nav-link.nav-link-selected * { color: white !important; fill: white !important; }
-    a.nav-link.nav-link-selected span { color: white !important; }
-    [class*="nav-link-selected"] * { color: white !important; }
+    /* Ensure selected menu icon inherits white color */
+    .nav-link-selected .icon { color: inherit !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -84,10 +82,11 @@ def render_sidebar():
                 orientation="vertical",
                 styles={
                     "container": {"padding": "4px !important", "background-color": "transparent"},
-                    "icon": {"color": "#1f77b4", "font-size": "16px"},
+                    "icon": {"font-size": "16px"},
                     "nav-link": {
                         "font-size": "14px", "text-align": "left", "margin": "2px 0",
                         "padding": "8px 12px", "border-radius": "6px",
+                        "color": "#444",
                     },
                     "nav-link-selected": {
                         "background-color": "#1f77b4", "color": "white", "font-weight": "600",

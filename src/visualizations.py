@@ -131,7 +131,7 @@ class ChartGenerator:
         return fig
 
     def plot_pnl_distribution(self, trades: pd.DataFrame) -> Optional[go.Figure]:
-        """Plot P&L distribution histogram."""
+        """Plot P&L distribution as a waterfall bar chart."""
         if not PLOTLY_AVAILABLE or trades.empty or 'pnl' not in trades.columns:
             return None
 
@@ -143,36 +143,49 @@ class ChartGenerator:
 
         fig = go.Figure()
 
-        wins = pnl_values[pnl_values > 0]
-        losses = pnl_values[pnl_values < 0]
+        # Individual trade P&L as a bar chart (sorted by value) — cleaner than histogram
+        sorted_pnl = pnl_values.sort_values().reset_index(drop=True)
+        bar_colors = ['rgba(231, 76, 60, 0.85)' if v < 0 else 'rgba(46, 204, 113, 0.85)' for v in sorted_pnl]
+        border_colors = ['#c0392b' if v < 0 else '#27ae60' for v in sorted_pnl]
 
-        if len(wins) > 0:
-            fig.add_trace(go.Histogram(
-                x=wins, name='Winning Trades',
-                marker_color=self.colors['success'], opacity=0.7,
-                hovertemplate='P&L: $%{x:,.0f}<br>Count: %{y}<extra></extra>'
-            ))
+        fig.add_trace(go.Bar(
+            x=list(range(len(sorted_pnl))),
+            y=sorted_pnl,
+            marker=dict(
+                color=bar_colors,
+                line=dict(width=1, color=border_colors),
+            ),
+            hovertemplate='Trade #%{x}<br>P&L: $%{y:,.0f}<extra></extra>',
+            showlegend=False,
+        ))
 
-        if len(losses) > 0:
-            fig.add_trace(go.Histogram(
-                x=losses, name='Losing Trades',
-                marker_color=self.colors['danger'], opacity=0.7,
-                hovertemplate='P&L: $%{x:,.0f}<br>Count: %{y}<extra></extra>'
-            ))
+        # Zero line
+        fig.add_hline(y=0, line_width=1.5, line_color='#555')
+
+        # Annotations for summary stats
+        avg_pnl = pnl_values.mean()
+        total_pnl = pnl_values.sum()
+        fig.add_annotation(
+            text=f"Avg: ${avg_pnl:+,.0f} | Total: ${total_pnl:+,.0f}",
+            xref="paper", yref="paper", x=0.5, y=1.08,
+            showarrow=False, font=dict(size=12, color='#555'),
+        )
 
         fig.update_layout(
-            title='P&L Distribution',
-            xaxis_title='P&L (NTD)',
-            yaxis_title='Count',
-            barmode='overlay',
+            title='P&L per Trade',
+            xaxis_title='Trades (sorted)',
+            yaxis_title='P&L (NTD)',
             template='plotly_white',
-            xaxis=dict(tickformat='$,.0f'),
+            xaxis=dict(showticklabels=False),
+            yaxis=dict(tickformat='$,.0f', zeroline=False),
+            bargap=0.15,
+            margin=dict(t=60),
         )
 
         return fig
 
     def plot_cumulative_pnl(self, trades: pd.DataFrame) -> Optional[go.Figure]:
-        """Plot cumulative P&L over time."""
+        """Plot cumulative P&L over time with gradient fill."""
         if not PLOTLY_AVAILABLE or trades.empty:
             return None
 
@@ -189,17 +202,56 @@ class ChartGenerator:
 
         fig = go.Figure()
 
+        cum_values = sell_trades['cumulative_pnl']
+        final_val = cum_values.iloc[-1]
+        is_positive = final_val >= 0
+
+        # Gradient fill — green if net positive, red if net negative
+        fill_color = 'rgba(46, 204, 113, 0.15)' if is_positive else 'rgba(231, 76, 60, 0.15)'
+        line_color = '#27ae60' if is_positive else '#c0392b'
+
         fig.add_trace(go.Scatter(
             x=sell_trades['date'],
-            y=sell_trades['cumulative_pnl'],
+            y=cum_values,
             mode='lines+markers',
             name='Cumulative P&L',
-            line=dict(color=self.colors['primary'], width=2),
-            marker=dict(size=6),
+            line=dict(color=line_color, width=2.5, shape='spline'),
+            marker=dict(size=7, color=line_color, line=dict(width=1, color='white')),
+            fill='tozeroy',
+            fillcolor=fill_color,
             hovertemplate='%{x|%Y-%m-%d}<br>Cumulative P&L: $%{y:,.0f}<extra></extra>'
         ))
 
-        fig.add_hline(y=0, line_dash="dash", line_color=self.colors['neutral'])
+        # Zero line
+        fig.add_hline(y=0, line_dash="dot", line_width=1, line_color='#999')
+
+        # Annotate final value
+        fig.add_annotation(
+            x=sell_trades['date'].iloc[-1],
+            y=final_val,
+            text=f"${final_val:+,.0f}",
+            showarrow=True, arrowhead=0, arrowcolor=line_color,
+            font=dict(size=13, color=line_color, family='Arial Black'),
+            bgcolor='white', bordercolor=line_color, borderwidth=1, borderpad=4,
+        )
+
+        # Annotate peak/trough
+        peak_idx = cum_values.idxmax()
+        trough_idx = cum_values.idxmin()
+        if cum_values.loc[peak_idx] > 0:
+            fig.add_annotation(
+                x=sell_trades.loc[peak_idx, 'date'], y=cum_values.loc[peak_idx],
+                text=f"Peak: ${cum_values.loc[peak_idx]:+,.0f}",
+                showarrow=True, arrowhead=2, ay=-30,
+                font=dict(size=10, color='#27ae60'), opacity=0.8,
+            )
+        if cum_values.loc[trough_idx] < 0:
+            fig.add_annotation(
+                x=sell_trades.loc[trough_idx, 'date'], y=cum_values.loc[trough_idx],
+                text=f"Trough: ${cum_values.loc[trough_idx]:+,.0f}",
+                showarrow=True, arrowhead=2, ay=30,
+                font=dict(size=10, color='#c0392b'), opacity=0.8,
+            )
 
         fig.update_layout(
             title='Cumulative P&L',
@@ -208,7 +260,8 @@ class ChartGenerator:
             hovermode='x unified',
             template='plotly_white',
             xaxis=dict(type='date', tickformat='%Y-%m-%d', tickangle=-45),
-            yaxis=dict(tickformat='$,.0f'),
+            yaxis=dict(tickformat='$,.0f', zeroline=False),
+            margin=dict(t=40),
         )
 
         return fig
@@ -246,10 +299,12 @@ class ChartGenerator:
         if trades is not None and not trades.empty:
             tp = trades.copy()
             tp['date'] = pd.to_datetime(tp['date'])
-            for action, color, shape in [
-                ('BUY', self.colors['success'], 'triangle-up'),
-                ('SELL', self.colors['danger'], 'triangle-down'),
-            ]:
+            # Use high-contrast colors distinct from candle red/green
+            marker_cfg = {
+                'BUY': {'color': '#0066FF', 'shape': 'triangle-up', 'outline': '#001a44'},
+                'SELL': {'color': '#FF6600', 'shape': 'triangle-down', 'outline': '#441a00'},
+            }
+            for action, cfg in marker_cfg.items():
                 subset = tp[tp['action'] == action]
                 if subset.empty:
                     continue
@@ -261,11 +316,17 @@ class ChartGenerator:
                     hovers.append(h)
                 fig.add_trace(go.Scatter(
                     x=subset['date'], y=subset['price'],
-                    mode='markers', name=action,
-                    marker=dict(symbol=shape, size=14, color=color,
-                                line=dict(width=2, color='white')),
-                    text=hovers,
-                    hovertemplate='%{text}<br>%{x|%Y-%m-%d}<extra></extra>'
+                    mode='markers+text', name=action,
+                    marker=dict(
+                        symbol=cfg['shape'], size=18, color=cfg['color'],
+                        line=dict(width=2.5, color=cfg['outline']),
+                        opacity=0.95,
+                    ),
+                    text=[action[0] for _ in subset.iterrows()],
+                    textposition='top center' if action == 'BUY' else 'bottom center',
+                    textfont=dict(size=10, color=cfg['color'], family='Arial Black'),
+                    hovertext=hovers,
+                    hovertemplate='%{hovertext}<br>%{x|%Y-%m-%d}<extra></extra>'
                 ), row=1, col=1)
 
         fig.update_layout(
