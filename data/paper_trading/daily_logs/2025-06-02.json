@@ -1,6 +1,6 @@
 {
   "date": "2025-06-02",
-  "timestamp": "2026-03-18T13:31:11.104879",
+  "timestamp": "2026-03-18T15:36:40.350609",
   "signals": [
     {
       "type": "BUY",
@@ -11,9 +11,9 @@
   ],
   "actions": [],
   "portfolio": {
-    "cash": 88713.62698590744,
+    "cash": 88713.6282095725,
     "positions_value": 11185.099365234375,
-    "total_equity": 99898.72635114181,
+    "total_equity": 99898.72757480688,
     "unrealized_pnl": 1527.4161738281255
   },
   "errors": []

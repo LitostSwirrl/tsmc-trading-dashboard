@@ -1,6 +1,6 @@
 {
   "date": "2025-09-24",
-  "timestamp": "2026-03-18T13:31:23.882425",
+  "timestamp": "2026-03-18T15:36:50.960283",
   "signals": [
     {
       "type": "BUY",
@@ -15,16 +15,16 @@
       "action": "BUY",
       "symbol": "2330",
       "shares": 7,
-      "price": 1332.536161010742,
-      "cost": 9341.045175281275,
-      "confidence": 0.5284128189086914,
+      "price": 1332.54,
+      "cost": 9341.05,
+      "confidence": 0.5284,
       "regime": "BULL"
     }
   ],
   "portfolio": {
-    "cash": 94619.3132444389,
+    "cash": 94097.00687546389,
     "positions_value": 9327.753127075193,
-    "total_equity": 103947.0663715141,
+    "total_equity": 103424.76000253909,
     "unrealized_pnl": 0.0
   },
   "errors": []

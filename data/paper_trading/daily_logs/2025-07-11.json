@@ -1,6 +1,6 @@
 {
   "date": "2025-07-11",
-  "timestamp": "2026-03-18T13:31:15.642678",
+  "timestamp": "2026-03-18T15:36:44.097892",
   "signals": [
     {
       "type": "HOLD",
@@ -14,18 +14,18 @@
       "date": "2025-07-11",
       "action": "SELL",
       "symbol": "2330",
-      "shares": 0,
-      "price": 1087.338087158203,
-      "pnl": 0.0,
-      "pnl_pct": 6.1740243947743245,
-      "confidence": 0.6146926283836365,
+      "shares": 9,
+      "price": 1087.34,
+      "pnl": 559.83,
+      "pnl_pct": 6.17,
+      "confidence": 0.6147,
       "regime": "SIDEWAYS"
     }
   ],
   "portfolio": {
-    "cash": 101469.73943180623,
+    "cash": 101469.74187913636,
     "positions_value": 0,
-    "total_equity": 101469.73943180623,
+    "total_equity": 101469.74187913636,
     "unrealized_pnl": 0
   },
   "errors": []

@@ -1,6 +1,6 @@
 {
   "date": "2026-03-06",
-  "timestamp": "2026-03-18T13:31:41.167825",
+  "timestamp": "2026-03-18T15:37:06.652873",
   "signals": [
     {
       "type": "HOLD",
@@ -14,18 +14,18 @@
       "date": "2026-03-06",
       "action": "SELL",
       "symbol": "2330",
-      "shares": 0,
-      "price": 1881.9697840576173,
-      "pnl": -0.0,
-      "pnl_pct": -5.3578017084957406,
-      "confidence": 0.6105436682701111,
+      "shares": 5,
+      "price": 1881.97,
+      "pnl": -542.65,
+      "pnl_pct": -5.36,
+      "confidence": 0.6105,
       "regime": "BULL"
     }
   ],
   "portfolio": {
-    "cash": 107195.14301839496,
+    "cash": 106672.8375059855,
     "positions_value": 0,
-    "total_equity": 107195.14301839496,
+    "total_equity": 106672.8375059855,
     "unrealized_pnl": 0
   },
   "errors": []

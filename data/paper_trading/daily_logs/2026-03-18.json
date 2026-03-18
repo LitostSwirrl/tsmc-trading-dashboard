@@ -1,20 +1,20 @@
 {
   "date": "2026-03-18",
-  "timestamp": "2026-03-18T13:31:42.812364",
+  "timestamp": "2026-03-18T15:37:07.871647",
   "signals": [
     {
       "type": "BUY",
       "direction": "LONG",
-      "confidence": 0.4071924686431885,
+      "confidence": 0.41861823201179504,
       "validated": true
     }
   ],
   "actions": [],
   "portfolio": {
-    "cash": 97952.85275362208,
-    "positions_value": 9475.0,
-    "total_equity": 107427.85275362208,
-    "unrealized_pnl": 245.86125793457177
+    "cash": 97430.54724121263,
+    "positions_value": 9525.0,
+    "total_equity": 106955.54724121263,
+    "unrealized_pnl": 295.86125793457177
   },
   "errors": []
 }

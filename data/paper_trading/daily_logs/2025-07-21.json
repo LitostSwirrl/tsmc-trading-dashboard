@@ -1,20 +1,20 @@
 {
   "date": "2025-07-21",
-  "timestamp": "2026-03-18T13:31:16.616553",
+  "timestamp": "2026-03-18T15:36:44.781212",
   "signals": [
     {
       "type": "HOLD",
       "direction": "LONG",
-      "confidence": 0.6028098464012146,
+      "confidence": 0.6058607697486877,
       "validated": true
     }
   ],
   "actions": [],
   "portfolio": {
-    "cash": 101955.46847961667,
-    "positions_value": 0,
-    "total_equity": 101955.46847961667,
-    "unrealized_pnl": 0
+    "cash": 91694.77001910163,
+    "positions_value": 10241.103515625,
+    "total_equity": 101935.87353472663,
+    "unrealized_pnl": 480.0411694335944
   },
   "errors": []
 }

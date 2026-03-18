@@ -1,6 +1,6 @@
 {
   "date": "2026-03-11",
-  "timestamp": "2026-03-18T13:31:41.824310",
+  "timestamp": "2026-03-18T15:37:07.133036",
   "signals": [
     {
       "type": "HOLD",
@@ -11,9 +11,9 @@
   ],
   "actions": [],
   "portfolio": {
-    "cash": 97952.85275362208,
+    "cash": 97430.54724121263,
     "positions_value": 9668.455200195312,
-    "total_equity": 107621.30795381739,
+    "total_equity": 107099.00244140794,
     "unrealized_pnl": 439.31645812988427
   },
   "errors": []
