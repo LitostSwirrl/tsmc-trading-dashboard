@@ -69,25 +69,26 @@ def render_sidebar():
         pages = ["Overview", "Price Chart", "Performance", "Trades", "Risk"]
         default_idx = pages.index(query_page) if query_page in pages else 0
 
-        page = option_menu(
-            None,
-            pages,
-            icons=["speedometer2", "graph-up-arrow", "bar-chart-line", "arrow-left-right", "shield-check"],
-            menu_icon="cast",
-            default_index=default_idx,
-            orientation="vertical",
-            styles={
-                "container": {"padding": "4px !important", "background-color": "transparent"},
-                "icon": {"color": "#1f77b4", "font-size": "16px"},
-                "nav-link": {
-                    "font-size": "14px", "text-align": "left", "margin": "2px 0",
-                    "padding": "8px 12px", "border-radius": "6px",
-                },
-                "nav-link-selected": {
-                    "background-color": "#1f77b4", "color": "white", "font-weight": "600",
-                },
-            }
-        )
+        with st.sidebar:
+            page = option_menu(
+                None,
+                pages,
+                icons=["speedometer2", "graph-up-arrow", "bar-chart-line", "arrow-left-right", "shield-check"],
+                menu_icon="cast",
+                default_index=default_idx,
+                orientation="vertical",
+                styles={
+                    "container": {"padding": "4px !important", "background-color": "transparent"},
+                    "icon": {"color": "#1f77b4", "font-size": "16px"},
+                    "nav-link": {
+                        "font-size": "14px", "text-align": "left", "margin": "2px 0",
+                        "padding": "8px 12px", "border-radius": "6px",
+                    },
+                    "nav-link-selected": {
+                        "background-color": "#1f77b4", "color": "white", "font-weight": "600",
+                    },
+                }
+            )
     except ImportError:
         page = st.sidebar.radio(
             "Navigation",
