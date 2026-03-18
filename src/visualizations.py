@@ -43,7 +43,8 @@ class ChartGenerator:
             name='Portfolio Value',
             line=dict(color=self.colors['primary'], width=2),
             fill='tozeroy',
-            fillcolor='rgba(31, 119, 180, 0.1)'
+            fillcolor='rgba(31, 119, 180, 0.1)',
+            hovertemplate='%{x|%Y-%m-%d}<br>Value: $%{y:,.0f}<extra></extra>'
         ))
 
         if trades is not None and not trades.empty:
@@ -51,82 +52,44 @@ class ChartGenerator:
             if 'date' in trades_with_dates.columns:
                 trades_with_dates['date'] = pd.to_datetime(trades_with_dates['date'])
 
-                # BUY markers
-                buys = trades_with_dates[trades_with_dates['action'] == 'BUY']
-                if not buys.empty:
-                    buy_equities = []
-                    for buy_date in buys['date']:
-                        matching = equity_data[equity_data['date'].dt.date <= buy_date.date()]
-                        if not matching.empty:
-                            buy_equities.append(matching['equity'].iloc[-1])
-                        else:
-                            buy_equities.append(equity_data['equity'].iloc[0])
+                for action, color, symbol_shape, direction in [
+                    ('BUY', self.colors['success'], 'triangle-up', 'Buy'),
+                    ('SELL', self.colors['danger'], 'triangle-down', 'Sell')
+                ]:
+                    action_trades = trades_with_dates[trades_with_dates['action'] == action]
+                    if action_trades.empty:
+                        continue
+
+                    equities = []
+                    for trade_date in action_trades['date']:
+                        matching = equity_data[equity_data['date'].dt.date <= trade_date.date()]
+                        equities.append(matching['equity'].iloc[-1] if not matching.empty else equity_data['equity'].iloc[0])
 
                     hover_texts = []
-                    for _, trade in buys.iterrows():
-                        qty = trade.get('quantity', 'N/A')
-                        price = trade.get('price', 'N/A')
-                        symbol = trade.get('symbol', '2330.TW')
-                        hover_texts.append(f"BUY {symbol}<br>Qty: {qty}<br>Price: ${price:,.0f}" if isinstance(price, (int, float)) else f"BUY {symbol}")
+                    for _, trade in action_trades.iterrows():
+                        qty = trade.get('shares', trade.get('quantity', 'N/A'))
+                        price = trade.get('price', 0)
+                        text = f"{action} {trade.get('symbol', '2330')}<br>Qty: {qty}<br>Price: ${price:,.0f}"
+                        if action == 'SELL' and 'pnl' in trade and trade['pnl'] != 0:
+                            pnl = trade['pnl']
+                            text += f"<br>P&L: ${pnl:+,.0f}"
+                        hover_texts.append(text)
 
                     fig.add_trace(go.Scatter(
-                        x=buys['date'],
-                        y=buy_equities,
+                        x=action_trades['date'],
+                        y=equities,
                         mode='markers',
-                        name='BUY',
-                        marker=dict(
-                            symbol='triangle-up',
-                            size=14,
-                            color=self.colors['success'],
-                            line=dict(width=2, color='white')
-                        ),
-                        text=hover_texts,
-                        hovertemplate='%{text}<br>Date: %{x|%Y-%m-%d}<extra></extra>'
-                    ))
-
-                # SELL markers
-                sells = trades_with_dates[trades_with_dates['action'] == 'SELL']
-                if not sells.empty:
-                    sell_equities = []
-                    for sell_date in sells['date']:
-                        matching = equity_data[equity_data['date'].dt.date <= sell_date.date()]
-                        if not matching.empty:
-                            sell_equities.append(matching['equity'].iloc[-1])
-                        else:
-                            sell_equities.append(equity_data['equity'].iloc[0])
-
-                    hover_texts = []
-                    for _, trade in sells.iterrows():
-                        qty = trade.get('quantity', 'N/A')
-                        price = trade.get('price', 'N/A')
-                        pnl = trade.get('pnl', 0)
-                        symbol = trade.get('symbol', '2330.TW')
-                        pnl_str = f"+${pnl:,.0f}" if pnl >= 0 else f"-${abs(pnl):,.0f}"
-                        hover_texts.append(f"SELL {symbol}<br>Qty: {qty}<br>Price: ${price:,.0f}<br>P&L: {pnl_str}" if isinstance(price, (int, float)) else f"SELL {symbol}")
-
-                    fig.add_trace(go.Scatter(
-                        x=sells['date'],
-                        y=sell_equities,
-                        mode='markers',
-                        name='SELL',
-                        marker=dict(
-                            symbol='triangle-down',
-                            size=14,
-                            color=self.colors['danger'],
-                            line=dict(width=2, color='white')
-                        ),
+                        name=action,
+                        marker=dict(symbol=symbol_shape, size=14, color=color,
+                                    line=dict(width=2, color='white')),
                         text=hover_texts,
                         hovertemplate='%{text}<br>Date: %{x|%Y-%m-%d}<extra></extra>'
                     ))
 
         if 'equity' in equity_data.columns and len(equity_data) > 0:
             initial = equity_data['equity'].iloc[0]
-            fig.add_hline(
-                y=initial,
-                line_dash="dash",
-                line_color=self.colors['neutral'],
-                annotation_text="Initial Capital"
-            )
+            fig.add_hline(y=initial, line_dash="dash", line_color=self.colors['neutral'],
+                         annotation_text="Initial Capital")
 
         fig.update_layout(
             title='Portfolio Equity Curve',
@@ -135,11 +98,8 @@ class ChartGenerator:
             hovermode='x unified',
             template='plotly_white',
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-            xaxis=dict(
-                type='date',
-                tickformat='%Y-%m-%d',
-                tickangle=-45,
-            ),
+            xaxis=dict(type='date', tickformat='%Y-%m-%d', tickangle=-45),
+            yaxis=dict(tickformat='$,.0f'),
         )
 
         return fig
@@ -153,12 +113,13 @@ class ChartGenerator:
 
         fig.add_trace(go.Scatter(
             x=drawdown_data['date'],
-            y=drawdown_data['drawdown'],
+            y=drawdown_data['drawdown'] * 100,
             mode='lines',
             name='Drawdown',
             line=dict(color=self.colors['danger'], width=2),
             fill='tozeroy',
-            fillcolor='rgba(231, 76, 60, 0.2)'
+            fillcolor='rgba(231, 76, 60, 0.2)',
+            hovertemplate='%{x|%Y-%m-%d}<br>Drawdown: %{y:.2f}%<extra></extra>'
         ))
 
         fig.update_layout(
@@ -168,6 +129,7 @@ class ChartGenerator:
             hovermode='x unified',
             template='plotly_white',
             xaxis=dict(type='date', tickformat='%Y-%m-%d', tickangle=-45),
+            yaxis=dict(tickformat='.1f', ticksuffix='%'),
         )
 
         return fig
@@ -178,6 +140,10 @@ class ChartGenerator:
             return None
 
         pnl_values = trades['pnl'].dropna()
+        pnl_values = pnl_values[pnl_values != 0]
+
+        if pnl_values.empty:
+            return None
 
         fig = go.Figure()
 
@@ -187,13 +153,15 @@ class ChartGenerator:
         if len(wins) > 0:
             fig.add_trace(go.Histogram(
                 x=wins, name='Winning Trades',
-                marker_color=self.colors['success'], opacity=0.7
+                marker_color=self.colors['success'], opacity=0.7,
+                hovertemplate='P&L: $%{x:,.0f}<br>Count: %{y}<extra></extra>'
             ))
 
         if len(losses) > 0:
             fig.add_trace(go.Histogram(
                 x=losses, name='Losing Trades',
-                marker_color=self.colors['danger'], opacity=0.7
+                marker_color=self.colors['danger'], opacity=0.7,
+                hovertemplate='P&L: $%{x:,.0f}<br>Count: %{y}<extra></extra>'
             ))
 
         fig.update_layout(
@@ -201,7 +169,8 @@ class ChartGenerator:
             xaxis_title='P&L (NTD)',
             yaxis_title='Count',
             barmode='overlay',
-            template='plotly_white'
+            template='plotly_white',
+            xaxis=dict(tickformat='$,.0f'),
         )
 
         return fig
@@ -214,18 +183,24 @@ class ChartGenerator:
         if 'pnl' not in trades.columns or 'date' not in trades.columns:
             return None
 
-        trades_sorted = trades.sort_values('date').copy()
-        trades_sorted['cumulative_pnl'] = trades_sorted['pnl'].cumsum()
+        # Only include SELL trades (which have P&L)
+        sell_trades = trades[trades['action'] == 'SELL'].copy() if 'action' in trades.columns else trades.copy()
+        if sell_trades.empty or sell_trades['pnl'].sum() == 0:
+            return None
+
+        sell_trades = sell_trades.sort_values('date')
+        sell_trades['cumulative_pnl'] = sell_trades['pnl'].cumsum()
 
         fig = go.Figure()
 
         fig.add_trace(go.Scatter(
-            x=trades_sorted['date'],
-            y=trades_sorted['cumulative_pnl'],
+            x=sell_trades['date'],
+            y=sell_trades['cumulative_pnl'],
             mode='lines+markers',
             name='Cumulative P&L',
             line=dict(color=self.colors['primary'], width=2),
-            marker=dict(size=6)
+            marker=dict(size=6),
+            hovertemplate='%{x|%Y-%m-%d}<br>Cumulative P&L: $%{y:,.0f}<extra></extra>'
         ))
 
         fig.add_hline(y=0, line_dash="dash", line_color=self.colors['neutral'])
@@ -235,7 +210,9 @@ class ChartGenerator:
             xaxis_title='Date',
             yaxis_title='Cumulative P&L (NTD)',
             hovermode='x unified',
-            template='plotly_white'
+            template='plotly_white',
+            xaxis=dict(type='date', tickformat='%Y-%m-%d', tickangle=-45),
+            yaxis=dict(tickformat='$,.0f'),
         )
 
         return fig
