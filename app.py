@@ -86,6 +86,7 @@ def render_sidebar():
                     },
                     "nav-link-selected": {
                         "background-color": "#1f77b4", "color": "white", "font-weight": "600",
+                        "--icon-color": "white !important",
                     },
                 }
             )
@@ -114,34 +115,46 @@ def render_tradingview_chart():
     """Render TradingView embedded chart for TSMC."""
     st.header("TSMC (2330.TW) Price Chart")
 
-    col1, col2 = st.columns([3, 1])
-    with col2:
-        interval = st.selectbox("Interval", ["D", "W", "M", "60", "15"], index=0,
-                                format_func=lambda x: {"D": "Daily", "W": "Weekly", "M": "Monthly", "60": "1H", "15": "15m"}[x])
-
-    # Use TradingView Advanced Chart widget (works for TWSE stocks)
+    # Use TradingView Symbol Overview widget — supports TSM (TSMC NYSE ADR)
+    # TWSE:2330 is restricted in embedded widgets; TSM is the universally supported ADR
     tradingview_html = f"""
-    <!-- TradingView Widget BEGIN -->
-    <div class="tradingview-widget-container" style="height:520px;width:100%">
-      <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+    <div class="tradingview-widget-container" style="width:100%;">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript"
+        src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
+        async>
       {{
-        "autosize": true,
-        "symbol": "TWSE:2330",
-        "interval": "{interval}",
-        "timezone": "Asia/Taipei",
-        "theme": "light",
-        "style": "1",
+        "symbols": [["TSMC", "TSM|12M"]],
+        "chartOnly": false,
+        "width": "100%",
+        "height": 600,
         "locale": "en",
-        "allow_symbol_change": true,
-        "support_host": "https://www.tradingview.com",
-        "studies": ["MASimple@tv-basicstudies", "Volume@tv-basicstudies"]
+        "colorTheme": "light",
+        "autosize": true,
+        "showVolume": true,
+        "showMA": true,
+        "hideDateRanges": false,
+        "hideMarketStatus": false,
+        "hideSymbolLogo": false,
+        "scalePosition": "right",
+        "scaleMode": "Normal",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+        "fontSize": "10",
+        "noTimeScale": false,
+        "valuesTracking": "1",
+        "changeMode": "price-and-percent",
+        "chartType": "area",
+        "maLineColor": "#2962FF",
+        "maLineWidth": 1,
+        "maLength": 20,
+        "lineWidth": 2,
+        "lineType": 0,
+        "dateRanges": ["1d|1", "1m|30", "3m|60", "12m|1D", "60m|1W", "all|1M"]
       }}
       </script>
     </div>
-    <!-- TradingView Widget END -->
     """
-    components.html(tradingview_html, height=540)
+    components.html(tradingview_html, height=620)
 
 
 def format_trades_table(trades: pd.DataFrame) -> pd.DataFrame:

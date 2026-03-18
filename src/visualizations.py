@@ -89,7 +89,9 @@ class ChartGenerator:
         if 'equity' in equity_data.columns and len(equity_data) > 0:
             initial = equity_data['equity'].iloc[0]
             fig.add_hline(y=initial, line_dash="dash", line_color=self.colors['neutral'],
-                         annotation_text="Initial Capital")
+                         annotation_text="Initial Capital",
+                         annotation_position="bottom left",
+                         annotation=dict(font_size=11, font_color=self.colors['neutral']))
 
         fig.update_layout(
             title='Portfolio Equity Curve',
@@ -125,7 +127,7 @@ class ChartGenerator:
         fig.update_layout(
             title='Portfolio Drawdown',
             xaxis_title='Date',
-            yaxis_title='Drawdown (%)',
+            yaxis_title='Drawdown from Peak (%)',
             hovermode='x unified',
             template='plotly_white',
             xaxis=dict(type='date', tickformat='%Y-%m-%d', tickangle=-45),
