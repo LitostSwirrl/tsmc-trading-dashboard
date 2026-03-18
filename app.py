@@ -225,15 +225,18 @@ def render_overview(data_loader, metrics, chart_gen, days):
     st.subheader("Trade Statistics")
     trade_stats = metrics.get_trade_statistics()
 
+    # Net P&L = equity - initial capital (includes commissions & unrealized)
+    net_pnl = portfolio['total_equity'] - portfolio.get('initial_capital', 100000)
+
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric("Total Trades", trade_stats.get('closed_trades', trade_stats['total_trades']))
     with col2:
         st.metric("Win Rate", f"{trade_stats['win_rate']:.1f}%")
     with col3:
-        st.metric("Total P&L", f"${trade_stats['total_pnl']:,.0f}")
+        st.metric("Net P&L", f"${net_pnl:+,.0f}")
     with col4:
-        st.metric("Avg P&L", f"${trade_stats['avg_pnl']:,.0f}")
+        st.metric("Avg P&L / Trade", f"${trade_stats['avg_pnl']:,.0f}")
 
 
 def render_performance(data_loader, metrics, chart_gen, days):
