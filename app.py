@@ -5,7 +5,6 @@ Streamlit-based web dashboard for monitoring paper trading.
 """
 
 import streamlit as st
-import streamlit.components.v1 as components
 import pandas as pd
 from datetime import datetime
 from pathlib import Path
@@ -34,6 +33,10 @@ st.markdown("""
     }
     .sidebar-title:hover { text-decoration: underline; }
     .sidebar-subtitle { font-size: 0.8rem; color: #666; margin-bottom: 1rem; }
+    /* Fix: selected menu icon invisible on blue bg */
+    .nav-link-selected .icon { color: white !important; }
+    div[data-testid="stSidebar"] .nav-link-selected i,
+    div[data-testid="stSidebar"] .nav-link-selected .bi { color: white !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -86,7 +89,6 @@ def render_sidebar():
                     },
                     "nav-link-selected": {
                         "background-color": "#1f77b4", "color": "white", "font-weight": "600",
-                        "--icon-color": "white !important",
                     },
                 }
             )
@@ -111,50 +113,40 @@ def render_sidebar():
     return page, lookback_days if lookback_days != "All" else None
 
 
-def render_tradingview_chart():
-    """Render TradingView embedded chart for TSMC."""
-    st.header("TSMC (2330.TW) Price Chart")
+@st.cache_data(ttl=3600)
+def fetch_tsmc_price(days: int) -> pd.DataFrame:
+    """Fetch TSMC price data from Yahoo Finance (cached 1 hour)."""
+    try:
+        import yfinance as yf
+        period_map = {30: "1mo", 90: "3mo", 180: "6mo", 365: "1y"}
+        period = period_map.get(days, "1y")
+        df = yf.download("2330.TW", period=period, progress=False)
+        if df.empty:
+            return pd.DataFrame()
+        df = df.reset_index()
+        df.columns = [c.lower() if isinstance(c, str) else c[0].lower() for c in df.columns]
+        if 'date' not in df.columns and 'datetime' in df.columns:
+            df = df.rename(columns={'datetime': 'date'})
+        return df
+    except Exception:
+        return pd.DataFrame()
 
-    # Use TradingView Symbol Overview widget — supports TSM (TSMC NYSE ADR)
-    # TWSE:2330 is restricted in embedded widgets; TSM is the universally supported ADR
-    tradingview_html = f"""
-    <div class="tradingview-widget-container" style="width:100%;">
-      <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript"
-        src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js"
-        async>
-      {{
-        "symbols": [["TSMC", "TSM|12M"]],
-        "chartOnly": false,
-        "width": "100%",
-        "height": 600,
-        "locale": "en",
-        "colorTheme": "light",
-        "autosize": true,
-        "showVolume": true,
-        "showMA": true,
-        "hideDateRanges": false,
-        "hideMarketStatus": false,
-        "hideSymbolLogo": false,
-        "scalePosition": "right",
-        "scaleMode": "Normal",
-        "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
-        "fontSize": "10",
-        "noTimeScale": false,
-        "valuesTracking": "1",
-        "changeMode": "price-and-percent",
-        "chartType": "area",
-        "maLineColor": "#2962FF",
-        "maLineWidth": 1,
-        "maLength": 20,
-        "lineWidth": 2,
-        "lineType": 0,
-        "dateRanges": ["1d|1", "1m|30", "3m|60", "12m|1D", "60m|1W", "all|1M"]
-      }}
-      </script>
-    </div>
-    """
-    components.html(tradingview_html, height=620)
+
+def render_price_chart(data_loader, chart_gen, days):
+    """Render TSMC price chart with trade markers."""
+    st.header("TSMC (2330.TW) Price Chart")
+    st.caption("Candlestick chart in NTD with bot trade decisions marked. Data from Yahoo Finance.")
+
+    price_days = days or 365
+    price_data = fetch_tsmc_price(price_days)
+    trades = data_loader.get_trade_history(days=days)
+
+    if not price_data.empty:
+        fig = chart_gen.plot_price_chart(price_data, trades)
+        if fig:
+            st.plotly_chart(fig, use_container_width=True, key=f"price_{days}")
+    else:
+        st.warning("Could not fetch TSMC price data. Please try again later.")
 
 
 def format_trades_table(trades: pd.DataFrame) -> pd.DataFrame:
@@ -340,7 +332,7 @@ def main():
     if page == "Overview":
         render_overview(data_loader, metrics, chart_gen, days)
     elif page == "Price Chart":
-        render_tradingview_chart()
+        render_price_chart(data_loader, chart_gen, days)
     elif page == "Performance":
         render_performance(data_loader, metrics, chart_gen, days)
     elif page == "Trades":

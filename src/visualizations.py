@@ -4,9 +4,10 @@ Dashboard Visualizations Module
 Chart generation using Plotly.
 """
 
-from typing import Optional
+from typing import Optional, List
 import pandas as pd
 import numpy as np
+from datetime import datetime, timedelta
 
 try:
     import plotly.graph_objects as go
@@ -217,4 +218,70 @@ class ChartGenerator:
             yaxis=dict(tickformat='$,.0f'),
         )
 
+        return fig
+
+    def plot_price_chart(self, price_data: pd.DataFrame, trades: pd.DataFrame = None) -> Optional[go.Figure]:
+        """Plot TSMC price candlestick chart with trade markers and volume."""
+        if not PLOTLY_AVAILABLE or price_data.empty:
+            return None
+
+        from plotly.subplots import make_subplots
+
+        fig = make_subplots(
+            rows=2, cols=1, shared_xaxes=True,
+            vertical_spacing=0.03, row_heights=[0.75, 0.25],
+        )
+
+        fig.add_trace(go.Candlestick(
+            x=price_data['date'],
+            open=price_data['open'], high=price_data['high'],
+            low=price_data['low'], close=price_data['close'],
+            name='TSMC 2330',
+            increasing_line_color=self.colors['success'],
+            decreasing_line_color=self.colors['danger'],
+        ), row=1, col=1)
+
+        vol_colors = [self.colors['success'] if c >= o else self.colors['danger']
+                      for c, o in zip(price_data['close'], price_data['open'])]
+        fig.add_trace(go.Bar(
+            x=price_data['date'], y=price_data['volume'],
+            name='Volume', marker_color=vol_colors, opacity=0.5,
+            showlegend=False,
+            hovertemplate='%{x|%Y-%m-%d}<br>Vol: %{y:,.0f}<extra></extra>'
+        ), row=2, col=1)
+
+        if trades is not None and not trades.empty:
+            tp = trades.copy()
+            tp['date'] = pd.to_datetime(tp['date'])
+            for action, color, shape in [
+                ('BUY', self.colors['success'], 'triangle-up'),
+                ('SELL', self.colors['danger'], 'triangle-down'),
+            ]:
+                subset = tp[tp['action'] == action]
+                if subset.empty:
+                    continue
+                hovers = []
+                for _, t in subset.iterrows():
+                    h = f"{action} {t.get('shares', '')}sh @ ${t.get('price', 0):,.0f}"
+                    if action == 'SELL' and t.get('pnl', 0) != 0:
+                        h += f"<br>P&L: ${t['pnl']:+,.0f}"
+                    hovers.append(h)
+                fig.add_trace(go.Scatter(
+                    x=subset['date'], y=subset['price'],
+                    mode='markers', name=action,
+                    marker=dict(symbol=shape, size=14, color=color,
+                                line=dict(width=2, color='white')),
+                    text=hovers,
+                    hovertemplate='%{text}<br>%{x|%Y-%m-%d}<extra></extra>'
+                ), row=1, col=1)
+
+        fig.update_layout(
+            title='TSMC (2330.TW) — Trade Decisions on Price Chart (NTD)',
+            hovermode='x unified', template='plotly_white',
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            xaxis2=dict(type='date', tickformat='%Y-%m-%d', tickangle=-45),
+            yaxis=dict(title='Price (NTD)', tickformat=',.0f'),
+            yaxis2=dict(title='Volume'),
+            xaxis_rangeslider_visible=False, height=620,
+        )
         return fig
