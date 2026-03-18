@@ -27,10 +27,12 @@ st.markdown("""
 <style>
     .block-container { padding-top: 1.5rem; }
     .stMetric > div { background: #f8f9fa; padding: 12px 16px; border-radius: 8px; }
-    .nav-link { font-size: 14px !important; }
-    .nav-link-selected { font-weight: 600 !important; }
     div[data-testid="stSidebar"] > div:first-child { padding-top: 1rem; }
-    .sidebar-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; color: #1f77b4; }
+    .sidebar-title {
+        font-size: 1.3rem; font-weight: 700; color: #1f77b4;
+        cursor: pointer; margin-bottom: 0.2rem;
+    }
+    .sidebar-title:hover { text-decoration: underline; }
     .sidebar-subtitle { font-size: 0.8rem; color: #666; margin-bottom: 1rem; }
 </style>
 """, unsafe_allow_html=True)
@@ -50,24 +52,40 @@ def init_dashboard():
 
 
 def render_sidebar():
-    """Render sidebar with modern navigation."""
-    st.sidebar.markdown('<div class="sidebar-title">TSMC Trading Bot</div>', unsafe_allow_html=True)
+    """Render sidebar with navigation."""
+    # Title links back to Overview via query param
+    st.sidebar.markdown(
+        '<a href="?page=Overview" target="_self" style="text-decoration:none;">'
+        '<div class="sidebar-title">TSMC Trading Bot</div></a>',
+        unsafe_allow_html=True
+    )
     st.sidebar.markdown('<div class="sidebar-subtitle">Paper Trading Dashboard</div>', unsafe_allow_html=True)
+    st.sidebar.markdown("---")
 
     try:
         from streamlit_option_menu import option_menu
+        # Check for query param override (from title click)
+        query_page = st.query_params.get("page", None)
+        pages = ["Overview", "Price Chart", "Performance", "Trades", "Risk"]
+        default_idx = pages.index(query_page) if query_page in pages else 0
+
         page = option_menu(
             None,
-            ["Overview", "Price Chart", "Performance", "Trades", "Risk"],
+            pages,
             icons=["speedometer2", "graph-up-arrow", "bar-chart-line", "arrow-left-right", "shield-check"],
             menu_icon="cast",
-            default_index=0,
-            orientation="horizontal",
+            default_index=default_idx,
+            orientation="vertical",
             styles={
-                "container": {"padding": "0 !important", "background-color": "#fafafa"},
-                "icon": {"color": "#1f77b4", "font-size": "14px"},
-                "nav-link": {"font-size": "13px", "text-align": "center", "margin": "0px", "padding": "8px 12px"},
-                "nav-link-selected": {"background-color": "#1f77b4", "color": "white", "font-weight": "600"},
+                "container": {"padding": "4px !important", "background-color": "transparent"},
+                "icon": {"color": "#1f77b4", "font-size": "16px"},
+                "nav-link": {
+                    "font-size": "14px", "text-align": "left", "margin": "2px 0",
+                    "padding": "8px 12px", "border-radius": "6px",
+                },
+                "nav-link-selected": {
+                    "background-color": "#1f77b4", "color": "white", "font-weight": "600",
+                },
             }
         )
     except ImportError:
@@ -100,29 +118,27 @@ def render_tradingview_chart():
         interval = st.selectbox("Interval", ["D", "W", "M", "60", "15"], index=0,
                                 format_func=lambda x: {"D": "Daily", "W": "Weekly", "M": "Monthly", "60": "1H", "15": "15m"}[x])
 
+    # Use TradingView Advanced Chart widget (works for TWSE stocks)
     tradingview_html = f"""
-    <div id="tradingview_chart" style="height: 520px;"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-    <script type="text/javascript">
-        new TradingView.widget({{
-            "width": "100%",
-            "height": 520,
-            "symbol": "TWSE:2330",
-            "interval": "{interval}",
-            "timezone": "Asia/Taipei",
-            "theme": "light",
-            "style": "1",
-            "locale": "en",
-            "toolbar_bg": "#f1f3f6",
-            "enable_publishing": false,
-            "allow_symbol_change": true,
-            "studies": ["MASimple@tv-basicstudies", "Volume@tv-basicstudies"],
-            "container_id": "tradingview_chart",
-            "hide_side_toolbar": false,
-            "details": true,
-            "calendar": false
-        }});
-    </script>
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container" style="height:520px;width:100%">
+      <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+      {{
+        "autosize": true,
+        "symbol": "TWSE:2330",
+        "interval": "{interval}",
+        "timezone": "Asia/Taipei",
+        "theme": "light",
+        "style": "1",
+        "locale": "en",
+        "allow_symbol_change": true,
+        "support_host": "https://www.tradingview.com",
+        "studies": ["MASimple@tv-basicstudies", "Volume@tv-basicstudies"]
+      }}
+      </script>
+    </div>
+    <!-- TradingView Widget END -->
     """
     components.html(tradingview_html, height=540)
 
@@ -197,7 +213,7 @@ def render_overview(data_loader, metrics, chart_gen, days):
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric("Total Trades", trade_stats['total_trades'])
+        st.metric("Total Trades", trade_stats.get('closed_trades', trade_stats['total_trades']))
     with col2:
         st.metric("Win Rate", f"{trade_stats['win_rate']:.1f}%")
     with col3:
@@ -253,12 +269,16 @@ def render_trades(data_loader, metrics, chart_gen, days):
             fig = chart_gen.plot_pnl_distribution(trades)
             if fig:
                 st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("P&L data not available yet.")
 
         with col2:
             st.subheader("Cumulative P&L")
             fig = chart_gen.plot_cumulative_pnl(trades)
             if fig:
                 st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("P&L data not available yet.")
     else:
         st.info("No trades executed yet. The bot is waiting for high-confidence signals.")
 
