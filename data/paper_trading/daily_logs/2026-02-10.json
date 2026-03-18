@@ -1,0 +1,20 @@
+{
+  "date": "2026-02-10",
+  "timestamp": "2026-02-10T16:30:11.005103",
+  "actions": [],
+  "signals": [
+    {
+      "type": "ENTRY",
+      "direction": "SHORT",
+      "confidence": 0.4576229751110077,
+      "validated": true
+    }
+  ],
+  "errors": [],
+  "portfolio": {
+    "cash": 100000,
+    "positions_value": 0,
+    "total_equity": 100000,
+    "unrealized_pnl": 0
+  }
+}

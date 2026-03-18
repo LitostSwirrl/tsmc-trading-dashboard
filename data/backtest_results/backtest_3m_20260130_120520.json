@@ -1,0 +1,717 @@
+{
+  "start_date": "2025-11-01T00:00:00",
+  "end_date": "2026-01-30T00:00:00",
+  "symbol": "2330",
+  "initial_capital": 50000,
+  "final_equity": 50000,
+  "final_cash": 50000,
+  "num_trades": 0,
+  "equity_curve": [
+    {
+      "date": "2025-11-03T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-04T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-05T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-06T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-07T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-10T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-11T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-12T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-13T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-14T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-17T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-18T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-19T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-20T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-21T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-24T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-25T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-26T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-27T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-11-28T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-01T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-02T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-03T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-04T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-05T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-08T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-09T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-10T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-11T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-12T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-15T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-16T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-17T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-18T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-19T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-22T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-23T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-24T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-26T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-29T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-30T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2025-12-31T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-02T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-06T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-08T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-09T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-12T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-13T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-14T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-15T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-16T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-19T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-20T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-21T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-22T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-23T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-26T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-27T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-28T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    },
+    {
+      "date": "2026-01-30T00:00:00",
+      "equity": 50000,
+      "cash": 50000,
+      "invested": 0,
+      "num_positions": 0
+    }
+  ],
+  "trade_log": [],
+  "event_log": [
+    {
+      "date": "2025-12-29T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.5908509492874146,
+      "regime": "SIDEWAYS",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1530.0
+    },
+    {
+      "date": "2025-12-30T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.44483518600463867,
+      "regime": "SIDEWAYS",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1520.0
+    },
+    {
+      "date": "2025-12-31T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.5116801261901855,
+      "regime": "SIDEWAYS",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1550.0
+    },
+    {
+      "date": "2026-01-02T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.5391848087310791,
+      "regime": "SIDEWAYS",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1585.0
+    },
+    {
+      "date": "2026-01-05T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "SELL",
+      "prediction": 0,
+      "confidence": 0.6231560707092285,
+      "regime": "SIDEWAYS",
+      "approved": true,
+      "reason": "SELL signal approved - all 1 checks passed",
+      "price": 1670.0
+    },
+    {
+      "date": "2026-01-06T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.5010048747062683,
+      "regime": "SIDEWAYS",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1705.0
+    },
+    {
+      "date": "2026-01-07T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "SELL",
+      "prediction": 0,
+      "confidence": 0.6254306435585022,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "SELL signal approved - all 1 checks passed",
+      "price": 1675.0
+    },
+    {
+      "date": "2026-01-08T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.4881807267665863,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1685.0
+    },
+    {
+      "date": "2026-01-09T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.5990434288978577,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1680.0
+    },
+    {
+      "date": "2026-01-12T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.5338740944862366,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1690.0
+    },
+    {
+      "date": "2026-01-13T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.6407938003540039,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1710.0
+    },
+    {
+      "date": "2026-01-14T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.5589284896850586,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1710.0
+    },
+    {
+      "date": "2026-01-15T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.5318110585212708,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1690.0
+    },
+    {
+      "date": "2026-01-16T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.4937843382358551,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1740.0
+    },
+    {
+      "date": "2026-01-19T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.48507168889045715,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1760.0
+    },
+    {
+      "date": "2026-01-20T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.4924279749393463,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1775.0
+    },
+    {
+      "date": "2026-01-21T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.4993557035923004,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1740.0
+    },
+    {
+      "date": "2026-01-22T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.5601730942726135,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1760.0
+    },
+    {
+      "date": "2026-01-23T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.542436420917511,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1770.0
+    },
+    {
+      "date": "2026-01-26T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.5392481088638306,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1755.0
+    },
+    {
+      "date": "2026-01-27T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.5596338510513306,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1780.0
+    },
+    {
+      "date": "2026-01-28T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.47222426533699036,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1820.0
+    },
+    {
+      "date": "2026-01-29T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "SELL",
+      "prediction": 0,
+      "confidence": 0.56220543384552,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "SELL signal approved - all 1 checks passed",
+      "price": 1805.0
+    },
+    {
+      "date": "2026-01-30T00:00:00",
+      "event_type": "SIGNAL_GENERATED",
+      "signal": "HOLD",
+      "prediction": 1,
+      "confidence": 0.4807857275009155,
+      "regime": "BULL",
+      "approved": true,
+      "reason": "HOLD signal - no action needed",
+      "price": 1790.0
+    }
+  ],
+  "metrics": {
+    "start_date": "2025-11-01",
+    "end_date": "2026-01-30",
+    "initial_capital": 50000,
+    "final_equity": 50000,
+    "total_return": 0.0,
+    "annual_return": 0.0,
+    "sharpe_ratio": 0.0,
+    "sortino_ratio": Infinity,
+    "calmar_ratio": 0.0,
+    "max_drawdown": 0.0,
+    "max_drawdown_start": "2025-11-03T00:00:00.000000000",
+    "max_drawdown_end": "2025-11-03T00:00:00.000000000",
+    "max_drawdown_duration": "0",
+    "total_trades": 0,
+    "win_rate": 0.0,
+    "profit_factor": 0.0,
+    "volatility": 0.0
+  }
+}
