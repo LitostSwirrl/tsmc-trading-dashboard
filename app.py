@@ -31,8 +31,10 @@ st.markdown("""
         font-size: 1.3rem; font-weight: 700; color: #1f77b4;
         cursor: pointer; margin-bottom: 0.2rem;
     }
-    .sidebar-title:hover { text-decoration: underline; }
+    .sidebar-title:hover { opacity: 0.8; }
     .sidebar-subtitle { font-size: 0.8rem; color: #666; margin-bottom: 1rem; }
+    a[href*="page=Overview"] { text-decoration: none !important; }
+    a[href*="page=Overview"]:hover { text-decoration: none !important; }
     /* Fix: selected menu icon invisible on blue bg — target all possible icon elements */
     .nav-link.nav-link-selected * { color: white !important; fill: white !important; }
     a.nav-link.nav-link-selected span { color: white !important; }
