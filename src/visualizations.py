@@ -282,7 +282,7 @@ class ChartGenerator:
             x=price_data['date'],
             open=price_data['open'], high=price_data['high'],
             low=price_data['low'], close=price_data['close'],
-            name='TSMC 2330',
+            showlegend=False,
             increasing_line_color=self.colors['success'],
             decreasing_line_color=self.colors['danger'],
         ), row=1, col=1)
@@ -299,15 +299,25 @@ class ChartGenerator:
         if trades is not None and not trades.empty:
             tp = trades.copy()
             tp['date'] = pd.to_datetime(tp['date'])
-            # Use high-contrast colors distinct from candle red/green
             marker_cfg = {
-                'BUY': {'color': '#0066FF', 'shape': 'triangle-up', 'outline': '#001a44'},
-                'SELL': {'color': '#FF6600', 'shape': 'triangle-down', 'outline': '#441a00'},
+                'BUY': {'color': '#0066FF', 'shape': 'triangle-up', 'outline': '#001a44',
+                         'vline': 'rgba(0, 102, 255, 0.25)'},
+                'SELL': {'color': '#FF6600', 'shape': 'triangle-down', 'outline': '#441a00',
+                          'vline': 'rgba(255, 102, 0, 0.25)'},
             }
             for action, cfg in marker_cfg.items():
                 subset = tp[tp['action'] == action]
                 if subset.empty:
                     continue
+
+                # Add faint dashed vertical lines for each trade date
+                for trade_date in subset['date']:
+                    fig.add_vline(
+                        x=trade_date.timestamp() * 1000,
+                        line_dash='dash', line_width=1, line_color=cfg['vline'],
+                        row='all', col=1,
+                    )
+
                 hovers = []
                 for _, t in subset.iterrows():
                     h = f"{action} {t.get('shares', '')}sh @ ${t.get('price', 0):,.0f}"
@@ -330,7 +340,7 @@ class ChartGenerator:
                 ), row=1, col=1)
 
         fig.update_layout(
-            title='TSMC (2330.TW) — Trade Decisions on Price Chart (NTD)',
+            title='TSMC (2330.TW) — Price Chart (NTD)',
             hovermode='x unified', template='plotly_white',
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
             xaxis2=dict(type='date', tickformat='%Y-%m-%d', tickangle=-45),
