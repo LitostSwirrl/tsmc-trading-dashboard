@@ -1,0 +1,32 @@
+{
+  "date": "2025-12-29",
+  "timestamp": "2026-03-18T13:31:33.878003",
+  "signals": [
+    {
+      "type": "HOLD",
+      "direction": "LONG",
+      "confidence": 0.6132263541221619,
+      "validated": true
+    }
+  ],
+  "actions": [
+    {
+      "date": "2025-12-29",
+      "action": "SELL",
+      "symbol": "2330",
+      "shares": 0,
+      "price": 1523.4993896484375,
+      "pnl": 0.0,
+      "pnl_pct": 6.497661121306137,
+      "confidence": 0.6132263541221619,
+      "regime": "BULL"
+    }
+  ],
+  "portfolio": {
+    "cash": 105185.35821101877,
+    "positions_value": 0,
+    "total_equity": 105185.35821101877,
+    "unrealized_pnl": 0
+  },
+  "errors": []
+}

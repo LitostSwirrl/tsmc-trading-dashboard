@@ -1,0 +1,31 @@
+{
+  "date": "2025-07-14",
+  "timestamp": "2026-03-18T13:31:15.805837",
+  "signals": [
+    {
+      "type": "BUY",
+      "direction": "LONG",
+      "confidence": 0.4497489631175995,
+      "validated": true
+    }
+  ],
+  "actions": [
+    {
+      "date": "2025-07-14",
+      "action": "BUY",
+      "symbol": "2330",
+      "shares": 9,
+      "price": 1084.562605102539,
+      "cost": 9774.972961333291,
+      "confidence": 0.4497489631175995,
+      "regime": "BULL"
+    }
+  ],
+  "portfolio": {
+    "cash": 91694.76647047294,
+    "positions_value": 9761.063445922851,
+    "total_equity": 101455.82991639579,
+    "unrealized_pnl": 0.0
+  },
+  "errors": []
+}

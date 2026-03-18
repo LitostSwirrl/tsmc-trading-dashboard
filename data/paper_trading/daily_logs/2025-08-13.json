@@ -1,0 +1,32 @@
+{
+  "date": "2025-08-13",
+  "timestamp": "2026-03-18T13:31:19.241405",
+  "signals": [
+    {
+      "type": "HOLD",
+      "direction": "LONG",
+      "confidence": 0.6119391918182373,
+      "validated": true
+    }
+  ],
+  "actions": [
+    {
+      "date": "2025-08-13",
+      "action": "SELL",
+      "symbol": "2330",
+      "shares": 0,
+      "price": 1186.187015258789,
+      "pnl": 0.0,
+      "pnl_pct": 6.088617396416698,
+      "confidence": 0.6119391918182373,
+      "regime": "SIDEWAYS"
+    }
+  ],
+  "portfolio": {
+    "cash": 102528.52520232878,
+    "positions_value": 0,
+    "total_equity": 102528.52520232878,
+    "unrealized_pnl": 0
+  },
+  "errors": []
+}

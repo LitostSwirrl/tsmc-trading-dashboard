@@ -1,20 +1,32 @@
 {
   "date": "2026-02-11",
-  "timestamp": "2026-02-11T16:30:07.529441",
-  "actions": [],
+  "timestamp": "2026-03-18T13:31:39.408640",
   "signals": [
     {
       "type": "HOLD",
       "direction": "LONG",
-      "confidence": 0.45214390754699707,
+      "confidence": 0.5775008201599121,
       "validated": true
     }
   ],
-  "errors": [],
+  "actions": [
+    {
+      "date": "2026-02-11",
+      "action": "SELL",
+      "symbol": "2330",
+      "shares": 0,
+      "price": 1906.8635665283202,
+      "pnl": 0.0,
+      "pnl_pct": 12.20450743310277,
+      "confidence": 0.5775008201599121,
+      "regime": "SIDEWAYS"
+    }
+  ],
   "portfolio": {
-    "cash": 100000,
+    "cash": 107239.57335037705,
     "positions_value": 0,
-    "total_equity": 100000,
+    "total_equity": 107239.57335037705,
     "unrealized_pnl": 0
-  }
+  },
+  "errors": []
 }

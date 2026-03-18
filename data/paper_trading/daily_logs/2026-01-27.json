@@ -1,0 +1,20 @@
+{
+  "date": "2026-01-27",
+  "timestamp": "2026-03-18T13:31:37.286449",
+  "signals": [
+    {
+      "type": "HOLD",
+      "direction": "LONG",
+      "confidence": 0.5878646969795227,
+      "validated": true
+    }
+  ],
+  "actions": [],
+  "portfolio": {
+    "cash": 95814.69563470094,
+    "positions_value": 10645.2685546875,
+    "total_equity": 106459.96418938844,
+    "unrealized_pnl": 438.3398891601573
+  },
+  "errors": []
+}

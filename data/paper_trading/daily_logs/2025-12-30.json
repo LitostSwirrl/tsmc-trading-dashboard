@@ -1,0 +1,31 @@
+{
+  "date": "2025-12-30",
+  "timestamp": "2026-03-18T13:31:34.037123",
+  "signals": [
+    {
+      "type": "BUY",
+      "direction": "LONG",
+      "confidence": 0.44193047285079956,
+      "validated": true
+    }
+  ],
+  "actions": [
+    {
+      "date": "2025-12-30",
+      "action": "BUY",
+      "symbol": "2330",
+      "shares": 6,
+      "price": 1516.5719416503905,
+      "cost": 9112.398340003454,
+      "confidence": 0.44193047285079956,
+      "regime": "SIDEWAYS"
+    }
+  ],
+  "portfolio": {
+    "cash": 96072.95987101532,
+    "positions_value": 9099.431649902343,
+    "total_equity": 105172.39152091766,
+    "unrealized_pnl": 0.0
+  },
+  "errors": []
+}

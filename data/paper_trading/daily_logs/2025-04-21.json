@@ -1,0 +1,20 @@
+{
+  "date": "2025-04-21",
+  "timestamp": "2026-03-18T13:31:06.817074",
+  "signals": [
+    {
+      "type": "BUY",
+      "direction": "LONG",
+      "confidence": 0.7587149739265442,
+      "validated": true
+    }
+  ],
+  "actions": [],
+  "portfolio": {
+    "cash": 88713.62698590744,
+    "positions_value": 9872.682861328125,
+    "total_equity": 98586.30984723556,
+    "unrealized_pnl": 214.99966992187547
+  },
+  "errors": []
+}
