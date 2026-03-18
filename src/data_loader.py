@@ -102,11 +102,11 @@ class DashboardDataLoader:
 
             if equity_data:
                 df = pd.DataFrame(equity_data)
-                df['date'] = pd.to_datetime(df['date'])
+                df['date'] = pd.to_datetime(df['date']).dt.normalize()
                 df = df.sort_values('date')
 
                 if days:
-                    cutoff_date = datetime.now() - timedelta(days=days)
+                    cutoff_date = pd.Timestamp.now().normalize() - timedelta(days=days)
                     df = df[df['date'] >= cutoff_date]
 
                 return df
@@ -139,10 +139,10 @@ class DashboardDataLoader:
 
                 if trades:
                     df = pd.DataFrame(trades)
-                    df['date'] = pd.to_datetime(df['date'])
+                    df['date'] = pd.to_datetime(df['date']).dt.normalize()
 
                     if days:
-                        cutoff_date = datetime.now() - timedelta(days=days)
+                        cutoff_date = pd.Timestamp.now().normalize() - timedelta(days=days)
                         df = df[df['date'] >= cutoff_date]
 
                     return df
@@ -213,33 +213,3 @@ class DashboardDataLoader:
         winning_trades = len(trades[trades['pnl'] > 0])
         return winning_trades / len(trades)
 
-    # Demo mode methods
-    def get_demo_equity_curve(self, days: int = 60) -> pd.DataFrame:
-        """Generate demo equity curve data."""
-        np.random.seed(42)
-        start_date = datetime.now() - timedelta(days=days)
-        dates = pd.date_range(start=start_date, periods=days, freq='D')
-
-        initial_capital = 100000
-        daily_returns = np.random.normal(0.001, 0.015, days)
-
-        equity = [initial_capital]
-        for ret in daily_returns[1:]:
-            equity.append(equity[-1] * (1 + ret))
-
-        return pd.DataFrame({'date': dates, 'equity': equity})
-
-    def get_demo_trade_history(self) -> pd.DataFrame:
-        """Generate demo trade history."""
-        trades = [
-            {'date': '2025-12-05', 'symbol': '2330.TW', 'action': 'BUY', 'quantity': 100, 'price': 580, 'pnl': 0},
-            {'date': '2025-12-15', 'symbol': '2330.TW', 'action': 'SELL', 'quantity': 100, 'price': 610, 'pnl': 3000},
-            {'date': '2025-12-20', 'symbol': '2330.TW', 'action': 'BUY', 'quantity': 120, 'price': 595, 'pnl': 0},
-            {'date': '2026-01-05', 'symbol': '2330.TW', 'action': 'SELL', 'quantity': 120, 'price': 575, 'pnl': -2400},
-            {'date': '2026-01-10', 'symbol': '2330.TW', 'action': 'BUY', 'quantity': 150, 'price': 560, 'pnl': 0},
-            {'date': '2026-01-20', 'symbol': '2330.TW', 'action': 'SELL', 'quantity': 150, 'price': 590, 'pnl': 4500},
-            {'date': '2026-01-25', 'symbol': '2330.TW', 'action': 'BUY', 'quantity': 130, 'price': 585, 'pnl': 0},
-        ]
-        df = pd.DataFrame(trades)
-        df['date'] = pd.to_datetime(df['date'])
-        return df

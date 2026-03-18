@@ -65,21 +65,12 @@ def render_sidebar():
     )
 
     st.sidebar.markdown("---")
-    st.sidebar.subheader("Demo Mode")
-    demo_mode = st.sidebar.checkbox(
-        "Show Demo Data", value=False,
-        help="Display sample data to preview charts"
-    )
-    if demo_mode:
-        st.sidebar.info("📊 Showing demo data with sample trades")
-
-    st.sidebar.markdown("---")
     st.sidebar.caption(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
 
-    return page, lookback_days if lookback_days != "All" else None, demo_mode
+    return page, lookback_days if lookback_days != "All" else None
 
 
-def render_overview(data_loader, metrics, chart_gen, days, demo_mode):
+def render_overview(data_loader, metrics, chart_gen, days):
     """Render overview page."""
     st.title("📈 Trading Bot Overview")
 
@@ -110,17 +101,13 @@ def render_overview(data_loader, metrics, chart_gen, days, demo_mode):
     # Equity curve
     st.subheader("Portfolio Value Over Time")
 
-    if demo_mode:
-        equity_data = data_loader.get_demo_equity_curve(days=days or 60)
-        trades = data_loader.get_demo_trade_history()
-    else:
-        equity_data = data_loader.get_equity_curve(days=days)
-        trades = data_loader.get_trade_history(days=days)
+    equity_data = data_loader.get_equity_curve(days=days)
+    trades = data_loader.get_trade_history(days=days)
 
     if not equity_data.empty:
         fig = chart_gen.plot_equity_curve(equity_data, trades)
         if fig:
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, key=f"equity_{days}")
     else:
         st.info("No equity data available yet. Paper trading will populate this chart.")
 
@@ -145,7 +132,7 @@ def render_overview(data_loader, metrics, chart_gen, days, demo_mode):
         st.metric("Avg P&L", f"${trade_stats['avg_pnl']:,.0f}")
 
 
-def render_performance(data_loader, metrics, chart_gen, days, demo_mode):
+def render_performance(data_loader, metrics, chart_gen, days):
     """Render performance page."""
     st.title("📊 Performance Metrics")
 
@@ -170,33 +157,21 @@ def render_performance(data_loader, metrics, chart_gen, days, demo_mode):
     # Drawdown chart
     st.subheader("Drawdown")
 
-    if demo_mode:
-        equity_data = data_loader.get_demo_equity_curve(days=days or 60)
-        if not equity_data.empty:
-            running_max = equity_data['equity'].expanding().max()
-            drawdown = (equity_data['equity'] - running_max) / running_max
-            drawdown_data = pd.DataFrame({'date': equity_data['date'], 'drawdown': drawdown})
-        else:
-            drawdown_data = pd.DataFrame()
-    else:
-        drawdown_data = data_loader.get_drawdown_data(days=days)
+    drawdown_data = data_loader.get_drawdown_data(days=days)
 
     if not drawdown_data.empty:
         fig = chart_gen.plot_drawdown(drawdown_data)
         if fig:
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, key=f"drawdown_{days}")
     else:
         st.info("No drawdown data available yet.")
 
 
-def render_trades(data_loader, metrics, chart_gen, days, demo_mode):
+def render_trades(data_loader, metrics, chart_gen, days):
     """Render trades page."""
     st.title("💰 Trade History")
 
-    if demo_mode:
-        trades = data_loader.get_demo_trade_history()
-    else:
-        trades = data_loader.get_trade_history(days=days)
+    trades = data_loader.get_trade_history(days=days)
 
     if not trades.empty:
         st.subheader("Recent Trades")
@@ -225,7 +200,7 @@ def render_trades(data_loader, metrics, chart_gen, days, demo_mode):
         st.info("No trades executed yet. The bot is waiting for high-confidence signals.")
 
 
-def render_risk(data_loader, metrics, chart_gen, days, demo_mode):
+def render_risk(data_loader, metrics, chart_gen, days):
     """Render risk page."""
     st.title("⚠️ Risk Management")
 
@@ -273,16 +248,16 @@ def main():
         st.error("Failed to initialize dashboard components.")
         return
 
-    page, days, demo_mode = render_sidebar()
+    page, days = render_sidebar()
 
     if page == "Overview":
-        render_overview(data_loader, metrics, chart_gen, days, demo_mode)
+        render_overview(data_loader, metrics, chart_gen, days)
     elif page == "Performance":
-        render_performance(data_loader, metrics, chart_gen, days, demo_mode)
+        render_performance(data_loader, metrics, chart_gen, days)
     elif page == "Trades":
-        render_trades(data_loader, metrics, chart_gen, days, demo_mode)
+        render_trades(data_loader, metrics, chart_gen, days)
     elif page == "Risk":
-        render_risk(data_loader, metrics, chart_gen, days, demo_mode)
+        render_risk(data_loader, metrics, chart_gen, days)
 
 
 if __name__ == "__main__":

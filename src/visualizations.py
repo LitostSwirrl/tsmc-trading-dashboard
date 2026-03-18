@@ -135,6 +135,11 @@ class ChartGenerator:
             hovermode='x unified',
             template='plotly_white',
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            xaxis=dict(
+                type='date',
+                tickformat='%Y-%m-%d',
+                tickangle=-45,
+            ),
         )
 
         return fig
@@ -162,6 +167,7 @@ class ChartGenerator:
             yaxis_title='Drawdown (%)',
             hovermode='x unified',
             template='plotly_white',
+            xaxis=dict(type='date', tickformat='%Y-%m-%d', tickangle=-45),
         )
 
         return fig
